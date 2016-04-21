@@ -18,6 +18,14 @@ int main() {
         tcg[0].ringed = true;
         tcg[1].ringed = true;
         tcg[2].ringed = true;
+  /* Or, for all truncations:, set numnode then:
+    for (unsigned b = 1u; b < (1u << numnode); ++b) {
+        for (unsigned v = 0; v < numnode; ++v) {
+            if (b & (1u << v)) // if bit v is set
+                tcg[v].ringed = true;
+            else
+                tcg[v].ringed = false;
+        }*/
         FaceOrbitPoset hasse{tcg};
         auto orbgraph = makeOrbit(hasse);
 

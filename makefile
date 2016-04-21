@@ -16,17 +16,11 @@ countonly: countonly.o poset.o coxeter.o
 countonly.o: countonly.cc poset.h coxeter.h
 	$(CXX) $(CCFLAGS) -c $<
 
-onetruncation: onetruncation.o poset.o coxeter.o TeXout.o
+truncations: truncations.o poset.o coxeter.o TeXout.o
 	$(CXX) $(CCFLAGS) $^ $(LDFLAGS) -o $@
 
-onetruncation.o: onetruncation.cc poset.h coxeter.h TeXout.h
+truncations.o: truncations.cc poset.h coxeter.h TeXout.h
 	$(CXX) $(CCFLAGS) -c $< 
-
-alltruncations: alltruncations.o poset.o coxeter.o TeXout.o
-	$(CXX) $(CCFLAGS) $^ $(LDFLAGS) -o $@
-
-alltruncations.o: alltruncations.cc poset.h coxeter.h TeXout.h
-	$(CXX) $(CCFLAGS) -c $<
 
 poset.o: poset.cc poset.h coxeter.h optional.h TeXout.h
 	$(CXX) $(CCFLAGS) -c $<
