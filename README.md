@@ -1,3 +1,5 @@
+# Coxeter-STG
+
 These programs work on [Coxeter diagrams](https://en.wikipedia.org/wiki/Coxeter%E2%80%93Dynkin_diagram) with ringed nodes, representing a polytope built by [Wythoff's construction](https://en.wikipedia.org/wiki/Wythoff_construction).
 The class `FaceOrbitPoset`, constructed from a Coxeter diagram,
 is a partially ordered set consisting of all the face orbits of the polytope.
@@ -31,3 +33,6 @@ After adding all your TeX, write the TeXout instance to an fstream.
 It is included in most major TeX distributions.
 When producing pdf output, the programs call `lualatex`, which should be
 in your PATH.
+
+This code is available to use, read, modify, and redistribute
+under the terms of the GNU GPL v3.
