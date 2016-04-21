@@ -22,7 +22,7 @@ void onering(unsigned maxnode) {
     putchar('\n');
     /* number of orbits */
     for (unsigned numnode = 1; numnode <= maxnode; ++numnode) {
-        CoxeterGraph tcg = coxeterA(numnode);
+        CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
@@ -52,7 +52,7 @@ void tworing(unsigned maxnode, unsigned gap) {
     putchar('\n');
     /* number of orbits */
     for (unsigned numnode = gap + 1; numnode <= maxnode; ++numnode) {
-        CoxeterGraph tcg = coxeterA(numnode);
+        CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode - gap; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
@@ -84,7 +84,7 @@ void threering(unsigned maxnode, unsigned gap1=1, unsigned gap2=1) {
     putchar('\n');
     /* number of orbits */
     for (unsigned numnode = gap1 + gap2 + 1; numnode <= maxnode; ++numnode) {
-        CoxeterGraph tcg = coxeterA(numnode);
+        CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode - gap1 - gap2; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {

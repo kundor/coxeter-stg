@@ -14,7 +14,7 @@ int main() {
     TeXout tex;
     tex.usetikzlibrary("positioning");
     for (size_t numnode = 3; numnode < 11; ++numnode) {
-        CoxeterGraph tcg = coxeterA(numnode);
+        CoxeterGraph tcg = linear_coxeter(numnode);
         tcg[0].ringed = true;
         tcg[1].ringed = true;
         tcg[2].ringed = true;

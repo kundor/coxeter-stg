@@ -16,16 +16,25 @@ struct EdgeOrder {
     unsigned int order;
 };
 
-typedef boost::adjacency_list <boost::vecS, boost::vecS, boost::undirectedS, VertexProps, EdgeOrder> CoxeterGraph;
+typedef boost::adjacency_list <boost::vecS,
+                               boost::vecS,
+                               boost::undirectedS,
+                               VertexProps,
+                               EdgeOrder> CoxeterGraph;
+
 typedef CoxeterGraph::vertices_size_type vsize_t; // it's std::size_t
 
 class TeXout; //forward declaration; see TeXout.h
 
-/* Return a Coxeter diagram of type A_n */
-CoxeterGraph coxeterA(vsize_t n);
-
-/* Return a Coxeter diagram of type B_n = C_n */
-CoxeterGraph coxeterBC(vsize_t n);
+/* Return a linear Coxeter diagram, all of whose edges have order 3,
+ * except the first edge is given by the parameter p.
+ * p = 3 is A_n
+ * p = 4 is B_n = C_n
+ * p = 5 is H_n (finite when n is 2, 3, or 4)
+ * p = 6 is G_n (finite when n is 2)
+ * When n=2, this is I_2(p) (two nodes, where the single edge is labeled p)
+ */
+CoxeterGraph linear_coxeter(vsize_t n, unsigned p = 3);
 
 /* Return a Coxeter diagram of type D_n */
 CoxeterGraph coxeterD(vsize_t n);
@@ -36,13 +45,11 @@ CoxeterGraph coxeterE(vsize_t n);
 /* Return a Coxeter diagram of type F_4 */
 CoxeterGraph coxeterF4();
 
-/* Return a Coxeter diagram of type H_n, where n = 2, 3, or 4 */
-CoxeterGraph coxeterH(vsize_t n);
-
-/* Return a Coxeter diagram with two nodes, where the single edge
- * is labeled p, sometimes called I_p; when p = 3, this is A_2;
- * when p = 4, this is B_2; when p = 5, this is H_2; when p = 6, this is G_2 */
-CoxeterGraph coxeterI(unsigned int p);
+/* Given a character X among A, B, C, D, E, F, G, H, or I,
+ * returns the Coxeter diagram of type X_n.
+ * n is the number of nodes in every case except I,
+ * where it is the label of the unique edge. */
+CoxeterGraph coxeter_dispatch(char c, unsigned int n);
 
 /* allringed: check if there is a ringed dot in every connected component
  * of a CoxeterGraph.  */

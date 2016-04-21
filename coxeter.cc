@@ -45,32 +45,18 @@ bool allringed(const CoxeterGraph& cg) {
     return all(ringincomp);
 }
 
-
-/* Return a Coxeter diagram of type A_n */
-CoxeterGraph coxeterA(vsize_t n) {
+/* Return a linear Coxeter diagram on n nodes, with first edge labeled p
+ * and all other edges labeled 3 */
+CoxeterGraph linear_coxeter(vsize_t n, unsigned p) {
     CoxeterGraph cg{n};
     initialize(cg);
-    if (n < 1) return cg; // do not make an 18-pentillion node graph
-    for (vdesc i = 0; i < n - 1; ++i) {
-        add_edge(i, i+1, {3u}, cg);
-    }
-    for (vdesc i = 0; i < n; ++i) {
-        cg[i].x_coord = i;
-    }
-    return cg;
-}
-
-/* Return a Coxeter diagram of type B_n = C_n */
-CoxeterGraph coxeterBC(vsize_t n) {
-    CoxeterGraph cg{n};
-    initialize(cg);
-    for (vdesc i = 0; i < n; ++i) {
-        cg[i].x_coord = i;
-    }
     if (n < 2) return cg;
-    add_edge(0u, 1u, {4u}, cg);
+    add_edge(0u, 1u, {p}, cg);
     for (vdesc i = 1; i < n - 1; ++i) {
         add_edge(i, i+1, {3u}, cg);
+    }
+    for (vdesc i = 0; i < n; ++i) {
+        cg[i].x_coord = i;
     }
     return cg;
 }
@@ -129,31 +115,29 @@ CoxeterGraph coxeterF4() {
     return cg;
 }
 
-
-/* Return a Coxeter diagram of type H_n, where n = 2, 3, or 4 */
-CoxeterGraph coxeterH(vsize_t n) {
-    CoxeterGraph cg{n};
-    initialize(cg);
-    if (n < 2) return cg;
-    add_edge(0u, 1u, {5u}, cg);
-    for (vdesc i = 1; i < n - 1; ++i) {
-        add_edge(i, i+1, {3u}, cg);
+CoxeterGraph coxeter_dispatch(char c, unsigned n) {
+    switch(c) {
+        case 'A':
+            return linear_coxeter(n, 3);
+        case 'B':
+        case 'C':
+            return linear_coxeter(n, 4);
+        case 'D':
+            return coxeterD(n);
+        case 'E':
+            return coxeterE(n);
+        case 'F':
+            if (n != 4) return {};
+            return coxeterF4();
+        case 'G':
+            return linear_coxeter(n, 6);
+        case 'H':
+            return linear_coxeter(n, 5);
+        case 'I':
+            return linear_coxeter(2, n);
+        default:
+            return {};
     }
-    for (vdesc i = 0; i < n; ++i) {
-        cg[i].x_coord = i;
-    }
-    return cg;
-}
-
-/* Return a Coxeter diagram with two nodes, where the single edge
- * is labeled p, sometimes called I_2(p); when p = 3, this is A_2;
- * when p = 4, this is B_2; when p = 5, this is H_2; when p = 6, this is G_2 */
-CoxeterGraph coxeterI(unsigned int p) {
-    CoxeterGraph cg{2};
-    initialize(cg);
-    add_edge(0u, 1u, {p}, cg);
-    cg[1].x_coord = 1; //default 0 for the rest
-    return cg;
 }
 
 TeXout& operator<<(TeXout& tex, const CoxeterGraph& cg) {
