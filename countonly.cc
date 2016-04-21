@@ -39,7 +39,7 @@ void onering(unsigned maxnode) {
 }
 
 void tworing(unsigned maxnode, unsigned gap) {
-    if (maxnode < gap) return;
+    if (maxnode <= gap) return;
     /* Header line */
     printf(" n");
     for (unsigned i = 0; i < maxnode - gap; ++i) {
@@ -68,27 +68,27 @@ void tworing(unsigned maxnode, unsigned gap) {
     }
 }
 
-void threering(unsigned maxnode, unsigned gap=1) {
-    if (maxnode < 2*gap) return;
+void threering(unsigned maxnode, unsigned gap1=1, unsigned gap2=1) {
+    if (maxnode <= gap1 + gap2) return;
     /* Header line */
     printf(" n");
-    for (unsigned i = 0; i < maxnode - 2*gap; ++i) {
-        if (i < 10 - 2*gap)
+    for (unsigned i = 0; i < maxnode - gap1 - gap2; ++i) {
+        if (i < 10 - gap1 - gap2)
             putchar(' ');
-        if (i < 10 - gap)
+        if (i < 10 - gap1)
             putchar(' ');
         if (i < 10)
             putchar(' ');
-        printf(" t_%d,%d,%d", i, i + gap, i + 2*gap);
+        printf(" t_%d,%d,%d", i, i + gap1, i + gap1 + gap2);
     }
     putchar('\n');
     /* number of orbits */
-    for (unsigned numnode = 2*gap + 1; numnode <= maxnode; ++numnode) {
+    for (unsigned numnode = gap1 + gap2 + 1; numnode <= maxnode; ++numnode) {
         CoxeterGraph tcg = coxeterA(numnode);
         printf("%2d", numnode);
-        for (unsigned i = 0; i < numnode - 2*gap; ++i) {
+        for (unsigned i = 0; i < numnode - gap1 - gap2; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
-                if (v == i || v == i + gap || v == i + 2*gap)
+                if (v == i || v == i + gap1 || v == i + gap1 + gap2)
                     tcg[v].ringed = true;
                 else
                     tcg[v].ringed = false;
