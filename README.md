@@ -7,6 +7,9 @@ The function `makeOrbit` constructs a symmetry type graph from the Face Orbit Po
 The symmetry type graph, also known as an orbit graph, represents all the flag orbits
 with edges labeled i where i-adjacent flags are in the corresponding orbits.
 
+Sample output:
+![Hasse diagram and orbit graph for t_{0,3}(H4)](sample-t03h4.png)
+
 Coxeter diagrams are represented as graphs using the [Boost Graph Library](http://www.boost.org/doc/libs/release/libs/graph/doc/index.html).
 Each vertex has properties `ringed` (boolean, initially false),
 and integers`x_coord` and `y_coord` (for use in drawing the diagram.)
