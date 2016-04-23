@@ -8,7 +8,6 @@
 #include "poset.h"
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <algorithm>
 #include <boost/program_options.hpp>
 #include <unistd.h> // execlp
@@ -18,42 +17,6 @@ using std::string;
 using boost::num_vertices;
 
 namespace { // this-file-only (internal linkage)
-    /* Ring all the nodes in cg, starting from the 0th, corresponding to
-     * '1's in the string s (which is presumed to consist of 0s and 1s.) */
-    void ringstr(CoxeterGraph& cg, const string& s) {
-        for (unsigned i = 0; i < num_vertices(cg); ++i)
-            cg[i].ringed = false;
-        for (unsigned i = 0; i < s.size(); ++i)
-            if (s[i] == '1')
-                cg[i].ringed = true;
-    }
-
-    /* Ring all the nodes in cg corresponding to set bits
-     * in the unsigned integer b */
-    void ringbits(CoxeterGraph& cg, unsigned b) {
-        for (unsigned v = 0; v < num_vertices(cg); ++v) {
-            if (b & (1u << v)) // if bit v is set
-                cg[v].ringed = true;
-            else
-                cg[v].ringed = false;
-        }
-    }
-
-    /* Return a string containing a comma-separated list of the ringed nodes
-     * in cg. */
-    string ringedlist(const CoxeterGraph& cg) {
-        string s;
-        bool first = true;
-        for (unsigned v = 0; v < num_vertices(cg); ++v) {
-            if (cg[v].ringed) {
-                if (first) first = false;
-                else s += ',';
-                s += std::to_string(v);
-            }
-        }
-        return s;
-    }
-
     void texgraphs(TeXout& tex, const FaceOrbitPoset& hasse) {
         auto orbgraph = makeOrbit(hasse);
         tex << "\\begin{tikzpicture}\n"
@@ -184,7 +147,7 @@ int main(int argc, char* argv[]) {
     if (numnode == 0) { // no diagram specified
         for (numnode = trunc.size(); numnode <= maxnodes; ++numnode) {
             tcg = linear_coxeter(numnode);
-            ringstr(tcg, trunc);
+            ringnodes(tcg, trunc);
             output(vm, tex, tcg);
         }
     } else { // specific diagram given
@@ -194,11 +157,11 @@ int main(int argc, char* argv[]) {
             tcg = linear_coxeter(numnode);
 
         if (!trunc.empty()) { // do one truncation of one diagram
-            ringstr(tcg, trunc);
+            ringnodes(tcg, trunc);
             output(vm, tex, tcg);
         } else { // Do all truncations
             for (unsigned b = 1u; b < (1u << numnode); ++b) {
-                ringbits(tcg, b);
+                ringnodes(tcg, b);
                 output(vm, tex, tcg);
             }
         }

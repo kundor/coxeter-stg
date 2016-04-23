@@ -1,6 +1,7 @@
 #ifndef COXETER_DIAGRAM_H
 #define COXETER_DIAGRAM_H
 #include <boost/graph/adjacency_list.hpp>
+#include <string>
 
 /* Coxeter diagram: an undirected graph, with nodes either ringed or not (bool),
  * and edges labeled by an integer, or ∞ (represented by 0 here).
@@ -54,6 +55,19 @@ CoxeterGraph coxeter_dispatch(char c, unsigned int n);
 /* allringed: check if there is a ringed dot in every connected component
  * of a CoxeterGraph.  */
 bool allringed(const CoxeterGraph& cg);
+
+/* ringnodes: overloads to ring nodes in a CoxeterGraph: */ 
+/*   Ring nodes corresponding to 1s in the string.
+ *   The length of the string s should be at most num_vertices(cg). */
+void ringnodes(CoxeterGraph& cg, const std::string& s);
+
+/*   Ring nodes corresponding to set bits in the unsigned integer b.
+ *   This only considers bits up to num_vertices(cg). */
+void ringnodes(CoxeterGraph& cg, unsigned b);
+
+/* Return a string containing a comma-separated list of the ringed nodes
+ * in cg. */
+std::string ringedlist(const CoxeterGraph& cg);
 
 /* TikZ (LaTeX) representation of the graph.
  * These assume the presence of the tikzlibrary "quotes" and some definitions,

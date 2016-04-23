@@ -5,7 +5,7 @@ The class `FaceOrbitPoset`, constructed from a Coxeter diagram,
 is a partially ordered set consisting of all the face orbits of the polytope.
 The function `makeOrbit` constructs a symmetry type graph from the Face Orbit Poset.
 The symmetry type graph, also known as an orbit graph, represents all the flag orbits
-with edges labeled i where i-adjacent flags are in the corresponding orbits.
+with edges labeled *i* where *i*-adjacent flags are in the corresponding orbits.
 
 Sample output:
 ![Hasse diagram and orbit graph for t_{0,3}(H4)](sample-t03h4.png)

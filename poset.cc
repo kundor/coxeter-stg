@@ -45,7 +45,7 @@ namespace {
     }
 
     const PosetNode& inserter(std::set<PosetNode>& s, bitset&& b, const CoxeterGraph& cg) {
-        return *(s.insert({b, cg, {}, {} }).first);
+        return *(s.insert({std::move(b), cg, {}, {}}).first);
     }
 }
 

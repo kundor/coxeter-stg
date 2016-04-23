@@ -3,6 +3,7 @@
 #include <boost/graph/connected_components.hpp>
 #include <vector>
 #include <algorithm>
+#include <limits>
 /* Coxeter diagram: an undirected graph, with nodes either ringed or not (bool),
  * and edges labeled by an integer, or ∞ (represented by 0 here).
  * (Consider doubles for edge labels, to allow fractional labels and literal ∞)
@@ -10,6 +11,7 @@
 
 using boost::num_vertices;
 using boost::add_edge;
+using std::string;
 typedef CoxeterGraph::vertex_descriptor vdesc; // it's std::size_t
 
 namespace { // functions available only in this file (static)
@@ -26,23 +28,6 @@ namespace { // functions available only in this file (static)
             cg[*vits.first].y_coord = 0;
         }
     }
-}
-
-/*
- * allringed: check if there is a ringed dot in every connected component
- * of a CoxeterGraph.
- */
-bool allringed(const CoxeterGraph& cg) {
-    const vsize_t nv = num_vertices(cg);
-    std::vector<int> component(nv);
-    const int nc = boost::connected_components(cg, &component[0]);
-    std::vector<bool> ringincomp(nc);
-    for (vdesc v = 0; v < nv; ++v) {
-        if (cg[v].ringed) {
-            ringincomp[component[v]] = true;
-        }
-    }
-    return all(ringincomp);
 }
 
 /* Return a linear Coxeter diagram on n nodes, with first edge labeled p
@@ -138,6 +123,64 @@ CoxeterGraph coxeter_dispatch(char c, unsigned n) {
         default:
             return {};
     }
+}
+
+/*
+ * allringed: check if there is a ringed dot in every connected component
+ * of a CoxeterGraph.
+ */
+bool allringed(const CoxeterGraph& cg) {
+    const vsize_t nv = num_vertices(cg);
+    std::vector<int> component(nv);
+    const int nc = boost::connected_components(cg, &component[0]);
+    std::vector<bool> ringincomp(nc);
+    for (vdesc v = 0; v < nv; ++v) {
+        if (cg[v].ringed) {
+            ringincomp[component[v]] = true;
+        }
+    }
+    return all(ringincomp);
+}
+
+/* Ring all the nodes in cg, starting from the 0th, corresponding to
+ * '1's in the string s (which is presumed to consist of 0s and 1s.) */
+void ringnodes(CoxeterGraph& cg, const string& s) {
+    vdesc v = 0;
+    vsize_t limit = std::min(num_vertices(cg), s.size());
+    for (; v < limit; ++v)
+        cg[v].ringed = (s[v] == '1');
+    for (; v < num_vertices(cg); ++v)
+        cg[v].ringed = false;
+}
+
+/* Ring all the nodes in cg corresponding to set bits
+ * in the unsigned integer b */
+void ringnodes(CoxeterGraph& cg, unsigned b) {
+    vdesc v = 0;
+    vsize_t limit = std::numeric_limits<unsigned>::digits;
+    limit = std::min(limit, num_vertices(cg));
+    /* It would be nice to rely on left-shifting by more than 31 bits
+     * yielding 0, so that the below code would just work while v goes up
+     * to num_vertices(cg). Unfortunately, shifting by more than 31 bits
+     * is undefined behavior by the standard. */
+    for (; v < limit; ++v)
+        cg[v].ringed = (b & (1u << v)); // if bit v is set
+    for (; v < num_vertices(cg); ++v)
+        cg[v].ringed = false;
+}
+
+/* Return a string containing a comma-separated list of the ringed nodes in cg. */
+string ringedlist(const CoxeterGraph& cg) {
+    string s;
+    bool first = true;
+    for (unsigned v = 0; v < num_vertices(cg); ++v) {
+        if (cg[v].ringed) {
+            if (first) first = false;
+            else s += ',';
+            s += std::to_string(v);
+        }
+    }
+    return s;
 }
 
 TeXout& operator<<(TeXout& tex, const CoxeterGraph& cg) {
