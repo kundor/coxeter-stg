@@ -30,3 +30,6 @@
 # generated TeX and auxiliaries
 output.*
 *.pdf
+
+.*.swp
+*.dSYM
