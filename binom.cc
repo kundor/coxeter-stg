@@ -1,4 +1,9 @@
-unsigned long gcd(unsigned long m, unsigned long n) {
+#include "binom.h"
+#ifdef BINOM_CHECK
+#include <stdexcept>
+#endif
+
+static unsigned long gcd(unsigned long m, unsigned long n) {
    while (n != 0) {
       long t = m % n;
       m = n;
@@ -7,27 +12,8 @@ unsigned long gcd(unsigned long m, unsigned long n) {
     return m;
 }
 
-unsigned long binom(int n, int k) {
-    if (k < 0 || n < k) // also covers n < 0
-        return 0;
-    if (k > n/2)
-        k = n - k;
-    if (k == 0)
-        return 1;
-    unsigned long result = 1;
-    for (unsigned long i = 1; i <=k; ++i) {
-        unsigned long mul = n - k + i;
-        unsigned long d = gcd(result, i);
-        result /= d;
-        mul /= (i/d);
-        result *= mul;
-    }
-    return result;
-}
-
-bool bcfitsul(int n, int k) {
-    if (k > n/2)
-        k = n - k;
+#ifdef BINOM_CHECK
+static bool bcfits64(int n, int k) {
     return (n <      68 || k < 31) &&
            (n <      69 || k < 29) &&
            (n <      70 || k < 28) &&
@@ -57,5 +43,27 @@ bool bcfitsul(int n, int k) {
            (n <  145057 || k <  4) &&
            (n < 4801281 || k <  3);
 }
+#endif
 
+uint64_t binom(int n, int k) {
+    if (k < 0 || n < k) // also covers n < 0
+        return 0;
+    if (k > n/2)
+        k = n - k;
+    if (k == 0)
+        return 1;
+#ifdef BINOM_CHECK
+    if (!bcfits64(n, k))
+        throw std::overflow_error("Result will not fit in 64 bits.");
+#endif
+    uint64_t result = 1;
+    for (uint64_t i = 1; i <= k; ++i) {
+        uint64_t mul = n - k + i;
+        uint64_t d = gcd(result, i);
+        result /= d;
+        mul /= (i/d);
+        result *= mul;
+    }
+    return result;
+}
 
