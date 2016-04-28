@@ -1,0 +1,30 @@
+   signed int              unsigned int             signed long            unsigned long
+                                                                         68 C 31 doesn't fit
+                                                 67 C 30 doesn't fit
+                                                                         69 C 29 doesn't fit
+                                                 68 C 28 doesn't fit     70 C 28 doesn't fit
+                                                 69 C 27 doesn't fit     71 C 27 doesn't fit
+                                                 70 C 26 doesn't fit     72 C 26 doesn't fit
+                                                 71 C 25 doesn't fit     73 C 25 doesn't fit
+                                                 73 C 24 doesn't fit     75 C 24 doesn't fit
+                                                 75 C 23 doesn't fit     77 C 23 doesn't fit
+                                                 77 C 22 doesn't fit     79 C 22 doesn't fit
+                                                 80 C 21 doesn't fit     83 C 21 doesn't fit
+                                                 84 C 20 doesn't fit     87 C 20 doesn't fit
+                                                 89 C 19 doesn't fit     92 C 19 doesn't fit
+                                                 95 C 18 doesn't fit     98 C 18 doesn't fit
+                         35 C 17 doesn't fit    102 C 17 doesn't fit    106 C 17 doesn't fit
+ 34 C 16 doesn't fit                            112 C 16 doesn't fit    117 C 16 doesn't fit
+                         36 C 15 doesn't fit    126 C 15 doesn't fit    131 C 15 doesn't fit
+ 35 C 14 doesn't fit     37 C 14 doesn't fit    144 C 14 doesn't fit    151 C 14 doesn't fit
+ 36 C 13 doesn't fit     38 C 13 doesn't fit    170 C 13 doesn't fit    178 C 13 doesn't fit
+ 38 C 12 doesn't fit     40 C 12 doesn't fit    207 C 12 doesn't fit    219 C 12 doesn't fit
+ 40 C 11 doesn't fit     43 C 11 doesn't fit    266 C 11 doesn't fit    283 C 11 doesn't fit
+ 44 C 10 doesn't fit     47 C 10 doesn't fit    362 C 10 doesn't fit    387 C 10 doesn't fit
+ 50 C  9 doesn't fit     53 C  9 doesn't fit    535 C  9 doesn't fit    578 C  9 doesn't fit
+ 59 C  8 doesn't fit     64 C  8 doesn't fit    888 C  8 doesn't fit    968 C  8 doesn't fit
+ 76 C  7 doesn't fit     84 C  7 doesn't fit    1734 C 7 doesn't fit    1914 C 7 doesn't fit
+111 C  6 doesn't fit    124 C  6 doesn't fit    4338 C 6 doesn't fit    4869 C 6 doesn't fit
+194 C  5 doesn't fit    223 C  5 doesn't fit    16176 C 5 doesn't fit   18581 C 5 doesn't fit
+478 C  4 doesn't fit    569 C  4 doesn't fit    121978 C 4 doesn't fit  145057 C 4 doesn't fit
+2346 C 3 doesn't fit    2955 C 3 doesn't fit    3810780 C 3 doesn't fit 4801281 C 3 doesn't fit
