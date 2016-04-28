@@ -57,7 +57,8 @@ uint64_t binom(int n, int k) {
         throw std::overflow_error("Result will not fit in 64 bits.");
 #endif
     uint64_t result = 1;
-    for (uint64_t i = 1; i <= k; ++i) {
+    const unsigned kk = k; // This is just to get rid of Wsign-compare
+    for (uint64_t i = 1; i <= kk; ++i) {
         uint64_t mul = n - k + i;
         uint64_t d = gcd(result, i);
         result /= d;
