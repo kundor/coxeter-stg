@@ -3,9 +3,9 @@
 #include <stdexcept>
 #endif
 
-static unsigned long gcd(unsigned long m, unsigned long n) {
+static uint64_t gcd(uint64_t m, uint64_t n) {
    while (n != 0) {
-      long t = m % n;
+      uint64_t t = m % n;
       m = n;
       n = t;
     }
