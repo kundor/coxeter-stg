@@ -26,10 +26,25 @@
 *.exe
 *.out
 *.app
+countonly
+truncations
+onetruncation
+alltruncations
+hasse-stg
+debug/truncations
+debug/countonly
+test/*test
+test/perf-link
+test/perf-nothrow
+test/perf-throw
+
 
 # generated TeX and auxiliaries
 output.*
 *.pdf
+*.aux
+*.log
+*.tex
 
 .*.swp
 *.dSYM
