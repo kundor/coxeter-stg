@@ -32,3 +32,6 @@ coxeter.o: coxeter.cc coxeter.h TeXout.h
 
 TeXout.o: TeXout.cc TeXout.h
 	$(CXX) $(CCFLAGS) -c $<
+
+binom.o: binom.cc binom.h
+	$(CXX) $(CCFLAGS) -c $<
