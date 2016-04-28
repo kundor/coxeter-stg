@@ -25,12 +25,8 @@ void onering(unsigned maxnode) {
         CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode; ++i) {
-            for (unsigned v = 0; v < numnode; ++v) {
-                if (v == i)
-                    tcg[v].ringed = true;
-                else
-                    tcg[v].ringed = false;
-            }
+            if (i) tcg[i-1].ringed = false;
+            tcg[i].ringed = true;
             FaceOrbitPoset hasse{tcg};
             printf("%5d", hasse.head->numpaths());
         }
@@ -56,10 +52,7 @@ void tworing(unsigned maxnode, unsigned gap) {
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode - gap; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
-                if (v == i || v == i + gap)
-                    tcg[v].ringed = true;
-                else
-                    tcg[v].ringed = false;
+                tcg[v].ringed = (v == i || v == i + gap);
             }
             FaceOrbitPoset hasse{tcg};
             printf("%8d", hasse.head->numpaths());
@@ -88,10 +81,7 @@ void threering(unsigned maxnode, unsigned gap1=1, unsigned gap2=1) {
         printf("%2d", numnode);
         for (unsigned i = 0; i < numnode - gap1 - gap2; ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
-                if (v == i || v == i + gap1 || v == i + gap1 + gap2)
-                    tcg[v].ringed = true;
-                else
-                    tcg[v].ringed = false;
+                tcg[v].ringed = (v == i || v == i + gap1 || v == i + gap1 + gap2);
             }
             FaceOrbitPoset hasse{tcg};
             printf("%11d", hasse.head->numpaths());
