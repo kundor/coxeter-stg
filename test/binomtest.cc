@@ -83,6 +83,7 @@ int main() {
         }
     }
     printf("Wrong answers with naive algorithm: %d\n", bargct);
+    // There are 1,522,323
     return 0;
 }
 
