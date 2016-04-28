@@ -9,6 +9,9 @@ perf-link: perf-link.cc ../binom.h binom.o
 binpolytest: binpolytest.cc ../binom.h binom.o
 	$(CXX) $(CCFLAGS) $< binom.o -o $@
 
+seqsolvertest: seqsolvertest.cc ../binom.h binom.o
+	$(CXX) $(CCFLAGS) $< binom.o -o $@
+
 binom.o: ../binom.cc ../binom.h
 	$(CXX) $(CCFLAGS) -c $<
 
