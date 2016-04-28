@@ -110,7 +110,7 @@ std::array<double,6> PosetNode::x_tuple() const {
  ******************/
 
 FaceOrbitPoset::FaceOrbitPoset(const CoxeterGraph& cg) :
-  nodes{num_vertices(cg) + 1},
+  nodes(num_vertices(cg) + 1),
   head{&inserter(nodes.back(), std::move(bitset{num_vertices(cg)}.set()), cg)} {
     genchildren();
 }
