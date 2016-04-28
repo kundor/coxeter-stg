@@ -68,3 +68,10 @@ uint64_t binom(int n, int k) {
     return result;
 }
 
+long long binpoly(std::vector<int> coef, int n, int offset) {
+    long long ans = 0;
+    for (int i = 0; static_cast<unsigned>(i) < coef.size(); ++i) {
+        ans += coef[i] * binom(n, offset + i);
+    }
+    return ans;
+}
