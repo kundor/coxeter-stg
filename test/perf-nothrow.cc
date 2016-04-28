@@ -37,9 +37,8 @@ int main() {
         }
     }
     auto toc = std::chrono::high_resolution_clock::now();
-    std::printf("%lld µs, %f µs\n",
-        std::chrono::duration_cast<std::chrono::microseconds>(toc - tic).count(),
-        std::chrono::duration<double, std::micro>(toc - tic).count());
+    std::printf("%lld µs\n",
+        std::chrono::duration_cast<std::chrono::microseconds>(toc - tic).count());
     return 0;
 }
 
