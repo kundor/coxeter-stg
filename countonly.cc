@@ -7,6 +7,7 @@
 #include "coxeter.h"
 #include "poset.h"
 #include <cstdio>
+#include <cstdlib> // atoi
 
 using std::printf;
 using std::putchar;
@@ -90,8 +91,13 @@ void threering(unsigned maxnode, unsigned gap1=1, unsigned gap2=1) {
     }
 }
 
-int main() {
-    const int maxnode = 12;
+int main(int argc, char* argv[]) {
+    const int maxnode = argc > 1 ? std::atoi(argv[1]) : 12;
+    if (maxnode < 3 || maxnode > 256) {
+        printf("First argument must be positive integer "
+               "(maximum number of nodes)\n");
+        return 1;
+    }
     onering(maxnode);
     putchar('\n');
     tworing(maxnode, 1);
