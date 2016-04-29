@@ -79,6 +79,9 @@ int main() {
                 break;
             }
         }
+        if (mink == 3) break;
+        // we skip checking binom(n,0), binom(n,1), binom(n,2) for all integers:
+        // remove the above line to check them.
         if (n % (1 << 21) == 0) {
             putchar('.');
             fflush(stdout);
