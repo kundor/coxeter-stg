@@ -1,6 +1,7 @@
 // Prevent the inclusion of binom.h, and its definition of BINOM_CHECK
 #define NAM_BINOM_H
 #define BINOM_CHECK
+#define BINOM_ONLY
 #include <cstdint>
 #include "../binom.cc"
 #include <cstdio>

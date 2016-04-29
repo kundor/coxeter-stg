@@ -1,4 +1,7 @@
 #include "binom.h"
+#ifndef BINOM_ONLY
+#include "TeXout.h"
+#endif
 #ifdef BINOM_CHECK
 #include <stdexcept>
 #endif
@@ -68,10 +71,26 @@ uint64_t binom(int n, int k) {
     return result;
 }
 
-long long binpoly(std::vector<int> coef, int n, int offset) {
-    long long ans = 0;
+#ifndef BINOM_ONLY
+
+long binpoly(const std::vector<int>& coef, int n, int offset) {
+    long ans = 0;
     for (int i = 0; static_cast<unsigned>(i) < coef.size(); ++i) {
         ans += coef[i] * binom(n, offset + i);
     }
     return ans;
 }
+
+TeXout& operator<<(TeXout& tex, binpolyTeX bp) {
+    if (bp.v.empty())
+        return tex;
+    tex.usepackage("amsmath");
+    tex << bp.v[0];
+    for (int i = 1; i < static_cast<int>(bp.v.size()); ++i) {
+        tex << " + " << bp.v[i] << "\binom{"
+            << bp.varname << "}{" << i << '}';
+    }
+    return tex;
+}
+
+#endif //BINOM_ONLY

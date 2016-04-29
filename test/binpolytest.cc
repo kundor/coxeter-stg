@@ -4,7 +4,7 @@ using std::vector;
 using std::printf;
 
 #define CHECK_EQ(ans, val) if (ans != val) \
-    printf("Agh, %llu != %d on line %d!\n", ans, val, __LINE__);
+    printf("Agh, %ld != %d on line %d!\n", ans, val, __LINE__);
 
 int main() {
     vector<int> v {2, 0, 3};

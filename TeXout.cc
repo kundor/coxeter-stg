@@ -93,6 +93,8 @@ std::ostream& TeXout::tostream(std::ostream& s) {
     }
     s << '{' << doc_class << "}\n";
     for (auto sit = packages.begin(); sit != packages.end(); ++sit) {
+        if (doc_class == "amsart" && *sit == "amsmath")
+            continue;
         s << "\\usepackage{" << *sit << "}\n";
     }
     if (!tikzlibraries.empty()) {

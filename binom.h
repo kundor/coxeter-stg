@@ -20,7 +20,22 @@ uint64_t binom(int n, int k);
  *  where c_i is coef[i]. If offset is nonzero, each term is
  *  c_i (n C offset+i) instead.
  *  Currently, n must be non-negative, or the answer is 0. */
-long long binpoly(std::vector<int> coef, int n, int offset=0);
- 
+long binpoly(const std::vector<int>& coef, int n, int offset=0);
+
+/* Helpers to output a vector<int> as a polynomial
+ * in the combinations basis, using TeXout */
+struct binpolyTeX {
+    const std::vector<int>& v;
+    char varname;
+    binpolyTeX(const std::vector<int>& vv, char c = 'x') :
+        v(vv), varname(c) {}
+};
+
+class TeXout; //forward declaration: see TeXout.h
+
+/* Use this like
+ *  tex << binpolyTeX(myvector, 'n') << "blah";
+ * The document should be in math mode! */
+TeXout& operator<<(TeXout& tex, binpolyTeX bp);
 
 #endif // NAM_BINOM_H
