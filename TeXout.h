@@ -2,7 +2,7 @@
 #define TEXOUT_H
 
 #include <iosfwd>
-//#include <string> // forward-declared in iosfwd, for gcc
+#include <string> // forward-declared in iosfwd, for gcc
 #include <set>
 #include <boost/dynamic_bitset_fwd.hpp>
 
@@ -24,6 +24,7 @@ class TeXout {
     void addtopreamble(std::string pre);
 
     TeXout& operator<<(std::string s);
+    TeXout& operator<<(char c);
     TeXout& operator<<(double d); // fixed precision, 1 digit after decimal point
     TeXout& operator<<(int i);
     TeXout& operator<<(unsigned u);

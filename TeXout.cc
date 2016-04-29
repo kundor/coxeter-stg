@@ -34,6 +34,11 @@ TeXout& TeXout::operator<<(std::string s) {
     return *this;
 }
 
+TeXout& TeXout::operator<<(char c) {
+    doc += c;
+    return *this;
+}
+
 TeXout& TeXout::operator<<(double d) {
     long i = std::lround(d*10);
     if (i < 0) {
@@ -62,6 +67,7 @@ TeXout& TeXout::operator<<(long unsigned u) {
 
 TeXout& TeXout::operator<<(boost::dynamic_bitset<> b) {
     char hex[] = "0123456789abcdef";
+    /* TODO: if b does not fit in ulong */
     for (auto v = b.to_ulong(); v; v >>= 4)
         doc += hex[v & 15ul]; //wrong-endian
     return *this;

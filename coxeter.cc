@@ -219,7 +219,7 @@ TeXout& operator<<(TeXout& tex, const CoxeterGraph& cg) {
             tex << "[\"\\infty\"]";
         else if (cg[*eit].order != 3)
             tex << "[\"" << cg[*eit].order << "\"]";
-        tex << " (v" << boost::target(*eit, cg) << ")";
+        tex << " (v" << boost::target(*eit, cg) << ')';
     }
     return tex << ";\n";
 }
