@@ -1,3 +1,5 @@
+#define BINOM_ONLY
+#define BINOM_CHECK
 #include "../binom.cc"
 #include <cstdio>
 #include <limits>
@@ -46,7 +48,7 @@ int main() {
     printf("2147483647 C 2: %llu\n", binom(2147483647,2));
 
     maxn = std::numeric_limits<int>::max();
-    int mink = maxn, bargct = 0, minbargk = maxn;
+    int mink = maxn, bargct = 0/*, minbargk = maxn*/;
     mpz_t c;
     mpz_init(c);
 

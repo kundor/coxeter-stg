@@ -1,7 +1,9 @@
-#include "../seqsolver.cc"
+#include "../binom.h"
 #include <iostream>
+#include <iterator>
 
 using std::cout;
+using std::vector;
 
 std::ostream& operator<<(std::ostream& os, const vector<int>& v) {
      std::copy(v.begin(), v.end(), std::ostream_iterator<int>(os, " "));

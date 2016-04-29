@@ -8,6 +8,7 @@
 
 #include <cstdint> // uint64_t
 #include <vector>
+#include "optional.h"
 
 /* Binomial coefficient, n choose k.
  * This produces the correct answer whenever it fits in 64 bits
@@ -20,9 +21,12 @@ uint64_t binom(int n, int k);
  *  where c_i is coef[i]. If offset is nonzero, each term is
  *  c_i (n C offset+i) instead.
  *  Currently, n must be non-negative, or the answer is 0. */
-long binpoly(const std::vector<int>& coef, int n, int offset=0);
+long binpoly(const std::vector<int>& coef, int n, int offset = 0);
 
-/* Helpers to output a vector<int> as a polynomial
+optional<std::vector<int>> seqsolver(std::vector<int> v, int start = 0);
+
+/********* TeX stuff *********
+ * Helpers to output a vector<int> as a polynomial
  * in the combinations basis, using TeXout */
 struct binpolyTeX {
     const std::vector<int>& v;

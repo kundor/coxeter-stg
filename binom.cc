@@ -1,9 +1,19 @@
-#include "binom.h"
-#ifndef BINOM_ONLY
-#include "TeXout.h"
-#endif
 #ifdef BINOM_CHECK
-#include <stdexcept>
+#  include <stdexcept>
+#endif
+
+#ifdef BINOM_ONLY
+#  include <cstdint>
+#else
+#  include "binom.h"
+#  include "TeXout.h"
+#  include <boost/algorithm/cxx11/all_of.hpp> // all_of_equal
+#  include <numeric> // adjacent_difference
+#  include <iterator> // distance
+
+using std::vector;
+using std::adjacent_difference;
+using boost::algorithm::all_of_equal;
 #endif
 
 static uint64_t gcd(uint64_t m, uint64_t n) {
@@ -73,12 +83,34 @@ uint64_t binom(int n, int k) {
 
 #ifndef BINOM_ONLY
 
-long binpoly(const std::vector<int>& coef, int n, int offset) {
+long binpoly(const vector<int>& coef, int n, int offset) {
     long ans = 0;
     for (int i = 0; static_cast<unsigned>(i) < coef.size(); ++i) {
         ans += coef[i] * binom(n, offset + i);
     }
     return ans;
+}
+
+template <typename It>
+static bool is_constant(It b, It e) {
+    if (std::distance(b, e) <= 1) return true;
+    return all_of_equal(b + 1, e, *b);
+}
+
+optional<vector<int>> seqsolver(vector<int> v, int start) {
+    auto d = v.begin();
+    while(!is_constant(d, v.end())) {
+        adjacent_difference(d, v.end(), d);
+        ++d;
+    }
+    if (std::distance(d, v.end()) < 3)
+        return {}; // not enough terms 
+    const int n = std::distance(v.begin(), d);
+    vector<int> coef(n + 1);
+    for (int i = n; i >= 0; --i) {
+        coef[i] = v[i] - binpoly(coef, start, -i);
+    }
+    return coef;
 }
 
 TeXout& operator<<(TeXout& tex, binpolyTeX bp) {
