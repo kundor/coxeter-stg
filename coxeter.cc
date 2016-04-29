@@ -1,8 +1,9 @@
 #include "coxeter.h"
 #include "TeXout.h"
 #include <boost/graph/connected_components.hpp>
+#include <boost/algorithm/cxx11/all_of.hpp>
 #include <vector>
-#include <algorithm>
+#include <algorithm> // min
 #include <limits>
 /* Coxeter diagram: an undirected graph, with nodes either ringed or not (bool),
  * and edges labeled by an integer, or ∞ (represented by 0 here).
@@ -12,15 +13,10 @@
 using boost::num_vertices;
 using boost::add_edge;
 using std::string;
+using boost::algorithm::all_of_equal;
 typedef CoxeterGraph::vertex_descriptor vdesc; // it's std::size_t
 
 namespace { // functions available only in this file (static)
-    bool all(const std::vector<bool>& vb) {
-        /* Return true iff all elements of vb are true. */
-        return std::all_of(vb.begin(), vb.end(),
-                  [](bool b) { return b; });
-    }
-
     void initialize(CoxeterGraph& cg) {
         for (auto vits = boost::vertices(cg); vits.first != vits.second; ++vits.first) {
             cg[*vits.first].ringed = false;
@@ -139,7 +135,7 @@ bool allringed(const CoxeterGraph& cg) {
             ringincomp[component[v]] = true;
         }
     }
-    return all(ringincomp);
+    return all_of_equal(ringincomp, true);
 }
 
 /* Ring all the nodes in cg, starting from the 0th, corresponding to
