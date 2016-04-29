@@ -11,7 +11,7 @@ uint64_t badbinom(int n, int k) {
     if (k > n/2)
         k = n - k;
     uint64_t result = 1;
-    for (uint64_t i = 1; i <= k; ++i) {
+    for (uint64_t i = 1; i <= static_cast<unsigned>(k); ++i) {
         result *= (n - k + i);
         result /= i;
     }
@@ -61,13 +61,13 @@ int main() {
                 d = badbinom(n, k);
                 if (d != mpz_get_ui(c)) {
                     ++bargct;
-                    if (k < minbargk) {
+                   /* if (k < minbargk) {
                         minbargk = k;
                         int wid;
                         gmp_printf("Bargh, %d C %d = %Zd%n vs.\n",
                                      n, k, c, &wid);
                         printf("%*llu\n", wid, d);
-                    }
+                    }*/
                 }
             } else {
                 if (k < mink) {
