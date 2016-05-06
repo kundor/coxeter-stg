@@ -9,7 +9,7 @@
 #include <cstdint> // uint64_t
 #include <vector>
 #include <iosfwd>
-#include "optional.h"
+#include <experimental/optional>
 
 /* Binomial coefficient, n choose k.
  * This produces the correct answer whenever it fits in 64 bits
@@ -24,7 +24,7 @@ uint64_t binom(int n, int k);
  *  Currently, n must be non-negative, or the answer is 0. */
 long binpoly(const std::vector<int>& coef, int n, int offset = 0);
 
-optional<std::vector<int>> seqsolver(std::vector<int> v, int start = 0);
+std::experimental::optional<std::vector<int>> seqsolver(std::vector<int> v, int start = 0);
 
 /********* TeX stuff *********
  * Helpers to output a vector<int> as a polynomial

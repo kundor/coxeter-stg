@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <numeric> // accumulate
 #include <cmath> // log2
-#include "optional.h" // get std::optional or equivalent, as ::optional
+#include <experimental/optional>
 #include "TeXout.h"
 
 using std::vector;
@@ -17,7 +17,7 @@ typedef CoxeterGraph::vertex_descriptor Vertex; // it's std::size_t
 namespace {
     /* If containers a and b differ at exactly one index, return that index. */
     template <typename V>
-    optional<int> diffinone(V a, V b) {
+    std::experimental::optional<int> diffinone(V a, V b) {
         if (a.size() != b.size())
             return {};
         bool differ = false;
