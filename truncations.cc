@@ -6,6 +6,7 @@
 #include "TeXout.h"
 #include "coxeter.h"
 #include "poset.h"
+#include "binom.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -26,16 +27,18 @@ namespace { // this-file-only (internal linkage)
                "\\end{tikzpicture}\n";
     }
 
-    void output(const po::variables_map& vm, TeXout& tex, const CoxeterGraph& cg) {
+    int output(const po::variables_map& vm, TeXout& tex, const CoxeterGraph& cg) {
         FaceOrbitPoset hasse{cg};
+        int np = hasse.head->numpaths();
         if (vm.count("tex") || vm.count("pdf"))
             texgraphs(tex, hasse);
         if (vm.count("count"))
             std::cout << "t_{" << ringedlist(cg) << "}("
                       << num_vertices(cg) << ")\t"
-                      << hasse.head->numpaths() << '\n';
+                      << np << '\n';
         // Ideally, this would factor in the maximum width of the ringed list
         // and align the program's output appropriately
+        return np;
     }
 }
 
@@ -145,10 +148,19 @@ int main(int argc, char* argv[]) {
     CoxeterGraph tcg;
 
     if (numnode == 0) { // no diagram specified
+        std::vector<int> orbs;
         for (numnode = trunc.size(); numnode <= maxnodes; ++numnode) {
             tcg = linear_coxeter(numnode);
             ringnodes(tcg, trunc);
-            output(vm, tex, tcg);
+            orbs.push_back(output(vm, tex, tcg));
+        }
+        auto binpoly = seqsolver(orbs, trunc.size());
+        if (binpoly) {
+            std::cout << "t_{" << ringedlist(tcg) << "}(n):  "
+                      << binpolyTeX(*binpoly, 'n') << '\n';
+        // TODO: make this an option; add to TeX output
+        } else {
+            std::cout << "Unable to solve\n";
         }
     } else { // specific diagram given
         if (vm.count("diagram"))

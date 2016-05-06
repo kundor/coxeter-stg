@@ -9,10 +9,10 @@ LDFLAGS= -Wno-maybe-uninitialized -L/opt/local/lib -dead_strip -Wl,-S,-x
 # warnings from boost/graph/detail/adjacency_list.hpp
 endif
 
-truncations: truncations.o poset.o coxeter.o TeXout.o
+truncations: truncations.o poset.o coxeter.o TeXout.o binom.o
 	$(CXX) $(CCFLAGS) $^ $(LDFLAGS) -lboost_program_options-mt -o $@
 
-truncations.o: truncations.cc poset.h coxeter.h TeXout.h
+truncations.o: truncations.cc poset.h coxeter.h TeXout.h binom.h
 	$(CXX) $(CCFLAGS) -c $< 
 
 countonly: countonly.o poset.o coxeter.o 
