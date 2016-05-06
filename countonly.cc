@@ -17,31 +17,37 @@ using std::putchar;
 using std::vector;
 using boost::algorithm::any_of_equal;
 
-void gapring(unsigned maxnode, vector<unsigned> gaps) {
+template <typename T>
+int vecsize(vector<T> v) {
+    /* Return signed size */
+    return v.size();
+}
+
+void gapring(int maxnode, vector<int> gaps) {
     gaps.insert(gaps.begin(), 0);
     std::partial_sum(gaps.begin(), gaps.end(), gaps.begin());
     if (maxnode <= gaps.back()) return;
     /* Header line */
     printf(" n");
-    for (unsigned i = 0; i < maxnode - gaps.back(); ++i) {
-        for (unsigned j = 0; j < gaps.size(); ++ j)
+    for (int i = 0; i < maxnode - gaps.back(); ++i) {
+        for (int j = 0; j < vecsize(gaps); ++ j)
             if (i + gaps[j] < 10)
                 putchar(' ');
         printf(" t_%d", i);
-        for (unsigned j = 1; j < gaps.size(); ++j)
+        for (int j = 1; j < vecsize(gaps); ++j)
             printf(",%d", i + gaps[j]);
     }
     putchar('\n');
     /* number of orbits */
-    for (unsigned numnode = gaps.back() + 1; numnode <= maxnode; ++numnode) {
+    for (int numnode = gaps.back() + 1; numnode <= maxnode; ++numnode) {
         CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
-        for (unsigned i = 0; i < numnode - gaps.back(); ++i) {
-            for (unsigned v = 0; v < numnode; ++v) {
+        for (int i = 0; i < numnode - gaps.back(); ++i) {
+            for (int v = 0; v < numnode; ++v) {
                 tcg[v].ringed = any_of_equal(gaps, v - i);
             }
             FaceOrbitPoset hasse{tcg};
-            printf("%*d", 2 + 3*gaps.size(), hasse.head->numpaths());
+            printf("%*d", 2 + 3*vecsize(gaps), hasse.head->numpaths());
         }
         putchar('\n');
     }
