@@ -8,84 +8,40 @@
 #include "poset.h"
 #include <cstdio>
 #include <cstdlib> // atoi
+#include <vector>
+#include <numeric> // partial_sum
+#include <boost/algorithm/cxx11/any_of.hpp>
 
 using std::printf;
 using std::putchar;
+using std::vector;
+using boost::algorithm::any_of_equal;
 
-void onering(unsigned maxnode) {
+void gapring(unsigned maxnode, vector<unsigned> gaps) {
+    gaps.insert(gaps.begin(), 0);
+    std::partial_sum(gaps.begin(), gaps.end(), gaps.begin());
+    if (maxnode <= gaps.back()) return;
     /* Header line */
     printf(" n");
-    for (unsigned i = 0; i < maxnode; ++i) {
-        if (i < 10)
-            putchar(' ');
+    for (unsigned i = 0; i < maxnode - gaps.back(); ++i) {
+        for (unsigned j = 0; j < gaps.size(); ++ j)
+            if (i + gaps[j] < 10)
+                putchar(' ');
         printf(" t_%d", i);
+        for (unsigned j = 1; j < gaps.size(); ++j)
+            printf(",%d", i + gaps[j]);
     }
     putchar('\n');
     /* number of orbits */
-    for (unsigned numnode = 1; numnode <= maxnode; ++numnode) {
+    for (unsigned numnode = gaps.back() + 1; numnode <= maxnode; ++numnode) {
         CoxeterGraph tcg = linear_coxeter(numnode);
         printf("%2d", numnode);
-        for (unsigned i = 0; i < numnode; ++i) {
-            if (i) tcg[i-1].ringed = false;
-            tcg[i].ringed = true;
-            FaceOrbitPoset hasse{tcg};
-            printf("%5d", hasse.head->numpaths());
-        }
-        putchar('\n');
-    }
-}
-
-void tworing(unsigned maxnode, unsigned gap) {
-    if (maxnode <= gap) return;
-    /* Header line */
-    printf(" n");
-    for (unsigned i = 0; i < maxnode - gap; ++i) {
-        if (i < 10 - gap)
-            putchar(' ');
-        if (i < 10)
-            putchar(' ');
-        printf(" t_%d,%d", i, i + gap);
-    }
-    putchar('\n');
-    /* number of orbits */
-    for (unsigned numnode = gap + 1; numnode <= maxnode; ++numnode) {
-        CoxeterGraph tcg = linear_coxeter(numnode);
-        printf("%2d", numnode);
-        for (unsigned i = 0; i < numnode - gap; ++i) {
+        for (unsigned i = 0; i < numnode - gaps.back(); ++i) {
             for (unsigned v = 0; v < numnode; ++v) {
-                tcg[v].ringed = (v == i || v == i + gap);
+                tcg[v].ringed = any_of_equal(gaps, v - i);
             }
             FaceOrbitPoset hasse{tcg};
-            printf("%8d", hasse.head->numpaths());
-        }
-        putchar('\n');
-    }
-}
-
-void threering(unsigned maxnode, unsigned gap1=1, unsigned gap2=1) {
-    if (maxnode <= gap1 + gap2) return;
-    /* Header line */
-    printf(" n");
-    for (unsigned i = 0; i < maxnode - gap1 - gap2; ++i) {
-        if (i < 10 - gap1 - gap2)
-            putchar(' ');
-        if (i < 10 - gap1)
-            putchar(' ');
-        if (i < 10)
-            putchar(' ');
-        printf(" t_%d,%d,%d", i, i + gap1, i + gap1 + gap2);
-    }
-    putchar('\n');
-    /* number of orbits */
-    for (unsigned numnode = gap1 + gap2 + 1; numnode <= maxnode; ++numnode) {
-        CoxeterGraph tcg = linear_coxeter(numnode);
-        printf("%2d", numnode);
-        for (unsigned i = 0; i < numnode - gap1 - gap2; ++i) {
-            for (unsigned v = 0; v < numnode; ++v) {
-                tcg[v].ringed = (v == i || v == i + gap1 || v == i + gap1 + gap2);
-            }
-            FaceOrbitPoset hasse{tcg};
-            printf("%11d", hasse.head->numpaths());
+            printf("%*d", 2 + 3*gaps.size(), hasse.head->numpaths());
         }
         putchar('\n');
     }
@@ -98,14 +54,14 @@ int main(int argc, char* argv[]) {
                "(maximum number of nodes)\n");
         return 1;
     }
-    onering(maxnode);
+    gapring(maxnode, {});
     putchar('\n');
-    tworing(maxnode, 1);
+    gapring(maxnode, {1});
     putchar('\n');
-    tworing(maxnode, 2);
+    gapring(maxnode, {2});
     putchar('\n');
-    tworing(maxnode, 3);
+    gapring(maxnode, {3});
     putchar('\n');
-    threering(maxnode);
+    gapring(maxnode, {1, 1});
     return 0;
 }
