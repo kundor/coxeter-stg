@@ -10,6 +10,8 @@
 #  include <boost/algorithm/cxx11/all_of.hpp> // all_of_equal
 #  include <numeric> // adjacent_difference
 #  include <iterator> // distance
+#  include <ostream>
+#  include <boost/format.hpp>
 
 using std::vector;
 using std::adjacent_difference;
@@ -113,16 +115,35 @@ optional<vector<int>> seqsolver(vector<int> v, int start) {
     return coef;
 }
 
+/* Write the binomial-basis polynomial in bp to the Stream os.
+ * bp.v must be nonempty. */
+template <typename Stream>
+static Stream& bpout(Stream& os, binpolyTeX bp, boost::format fmt) {
+    os << bp.v[0];
+    for (int i = 1; i < static_cast<int>(bp.v.size()); ++i) {
+        if (bp.v[i] > 1)
+            os << " + " << bp.v[i] << (fmt % bp.varname % i).str();
+        else if (bp.v[i] == 1)
+            os << " + " << (fmt % bp.varname % i).str();
+        else if (bp.v[i] == -1)
+            os << " - " << (fmt % bp.varname % i).str();
+        else if (bp.v[i] < -1)
+            os << " - " << -bp.v[i] << (fmt % bp.varname % i).str();
+    }
+    return os;
+}
+
 TeXout& operator<<(TeXout& tex, binpolyTeX bp) {
     if (bp.v.empty())
         return tex;
     tex.usepackage("amsmath");
-    tex << bp.v[0];
-    for (int i = 1; i < static_cast<int>(bp.v.size()); ++i) {
-        tex << " + " << bp.v[i] << "\binom{"
-            << bp.varname << "}{" << i << '}';
-    }
-    return tex;
+    return bpout(tex, bp, boost::format("\binom{%1%}{%2%}"));
+}
+
+std::ostream& operator<<(std::ostream& os, binpolyTeX bp) {
+    if (bp.v.empty())
+        return os;
+    return bpout(os, bp, boost::format("(%1% C %2%)"));
 }
 
 #endif //BINOM_ONLY

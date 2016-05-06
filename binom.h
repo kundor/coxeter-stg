@@ -8,6 +8,7 @@
 
 #include <cstdint> // uint64_t
 #include <vector>
+#include <iosfwd>
 #include "optional.h"
 
 /* Binomial coefficient, n choose k.
@@ -41,5 +42,7 @@ class TeXout; //forward declaration: see TeXout.h
  *  tex << binpolyTeX(myvector, 'n') << "blah";
  * The document should be in math mode! */
 TeXout& operator<<(TeXout& tex, binpolyTeX bp);
+
+std::ostream& operator<<(std::ostream& os, binpolyTeX bp);
 
 #endif // NAM_BINOM_H
