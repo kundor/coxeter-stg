@@ -27,7 +27,9 @@
 *.out
 *.app
 countonly
+countonly[0-9]
 truncations
+truncations[0-9]
 onetruncation
 alltruncations
 hasse-stg
