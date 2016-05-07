@@ -9,13 +9,16 @@
 #include "binom.h"
 #include <iostream>
 #include <fstream>
-#include <algorithm>
 #include <boost/program_options.hpp>
+#include <boost/algorithm/cxx11/all_of.hpp>
+#include <boost/range/algorithm/count.hpp>
 #include <unistd.h> // execlp
 
 namespace po = boost::program_options;
 using std::string;
 using boost::num_vertices;
+using boost::range::count;
+using boost::algorithm::all_of;
 
 namespace { // this-file-only (internal linkage)
     void texgraphs(TeXout& tex, const FaceOrbitPoset& hasse) {
@@ -39,6 +42,11 @@ namespace { // this-file-only (internal linkage)
         // Ideally, this would factor in the maximum width of the ringed list
         // and align the program's output appropriately
         return np;
+    }
+
+    template <typename Container>
+    int popct(const Container& v) {
+        return v.size() - count(v, 0);
     }
 }
 
@@ -115,8 +123,7 @@ int main(int argc, char* argv[]) {
         }
     } else if (vm.count("truncate")) {
         if (trunc.empty() ||
-                !std::all_of(trunc.begin(), trunc.end(),
-                    [](char c){ return c == '0' || c == '1'; })) {
+                !all_of(trunc, [](char c){ return c == '0' || c == '1'; })) {
             std::cerr << "<pattern> must consist of 0s and 1s.\n";
             usage = true;
         }
@@ -154,10 +161,23 @@ int main(int argc, char* argv[]) {
             ringnodes(tcg, trunc);
             orbs.push_back(output(vm, tex, tcg));
         }
-        auto binpoly = seqsolver(orbs, trunc.size());
-        if (binpoly) {
+        auto binpoly = seqsolver(orbs, trunc.size()),
+             binpolym1 = seqsolver(orbs, trunc.size() - 1), // for n - 1
+             binpolyp1 = seqsolver(orbs, trunc.size() + 1); // for n + 1
+        if (binpoly) { // if binpoly is valid, the other should be also
+            int msize = popct(binpoly);
+            string var = "n";
+            if (popct(binpolym1) < msize) {
+                binpoly.swap(binpolym1);
+                msize = popct(binpoly);
+                var = "n - 1";
+            }
+            if (popct(binpolyp1) < msize) {
+                binpoly.swap(binpolyp1);
+                var = "n + 1";
+            }
             std::cout << "t_{" << ringedlist(tcg) << "}(n):  "
-                      << binpolyTeX(*binpoly, 'n') << '\n';
+                      << binpolyTeX(*binpoly, var) << '\n';
         // TODO: make this an option; add to TeX output
         } else {
             std::cout << "Unable to solve\n";

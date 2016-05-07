@@ -33,7 +33,7 @@ std::experimental::optional<std::vector<int>> seqsolver(std::vector<int> v, int 
 struct binpolyTeX {
     const std::vector<int>& v;
     std::string varname;
-    binpolyTeX(const std::vector<int>& vv, std::string&& vn = "x") :
+    binpolyTeX(const std::vector<int>& vv, std::string vn = "x") :
         v(vv), varname(std::move(vn)) {}
 };
 
