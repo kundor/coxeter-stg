@@ -99,7 +99,7 @@ static bool is_constant(It b, It e) {
     return all_of_equal(b + 1, e, *b);
 }
 
-std::experimental::optional<vector<int>> seqsolver(vector<int> v, int start) {
+vector<int> seqsolver(vector<int> v, int start) {
     auto d = v.begin();
     while(!is_constant(d, v.end())) {
         adjacent_difference(d, v.end(), d);

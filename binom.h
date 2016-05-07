@@ -10,7 +10,6 @@
 #include <vector>
 #include <iosfwd>
 #include <string>
-#include <experimental/optional>
 
 /* Binomial coefficient, n choose k.
  * This produces the correct answer whenever it fits in 64 bits
@@ -25,7 +24,10 @@ uint64_t binom(int n, int k);
  *  Currently, n must be non-negative, or the answer is 0. */
 long binpoly(const std::vector<int>& coef, int n, int offset = 0);
 
-std::experimental::optional<std::vector<int>> seqsolver(std::vector<int> v, int start = 0);
+/* Finds a binomial-bases polynomial generating the sequence,
+ * if it exists and sufficiently many terms are given.
+ * If no solution can be found, returns an empty vector. */
+std::vector<int> seqsolver(std::vector<int> v, int start = 0);
 
 /********* TeX stuff *********
  * Helpers to output a vector<int> as a polynomial

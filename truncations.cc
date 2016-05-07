@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
         auto binpoly = seqsolver(orbs, trunc.size()),
              binpolym1 = seqsolver(orbs, trunc.size() - 1), // for n - 1
              binpolyp1 = seqsolver(orbs, trunc.size() + 1); // for n + 1
-        if (binpoly) { // if binpoly is valid, the other should be also
+        if (!binpoly.empty()) { // if binpoly is valid, the others should be also
             int msize = popct(binpoly);
             string var = "n";
             if (popct(binpolym1) < msize) {
@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
                 var = "n + 1";
             }
             std::cout << "t_{" << ringedlist(tcg) << "}(n):  "
-                      << binpolyTeX(*binpoly, var) << '\n';
+                      << binpolyTeX(binpoly, var) << '\n';
         // TODO: make this an option; add to TeX output
         } else {
             std::cout << "Unable to solve\n";
