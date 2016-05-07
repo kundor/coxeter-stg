@@ -20,9 +20,9 @@ using boost::algorithm::all_of_equal;
 
 static uint64_t gcd(uint64_t m, uint64_t n) {
    while (n != 0) {
-      uint64_t t = m % n;
-      m = n;
-      n = t;
+      m %= n;
+      if (m == 0) return n;
+      n %= m;
     }
     return m;
 }
