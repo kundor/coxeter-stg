@@ -95,6 +95,14 @@ int main(int argc, char* argv[]) {
     if (vm.count("pdf") && texfile.empty())
         texfile = "output.tex";
     
+    if (vm.count("truncate")) {
+        if (trunc.empty() ||
+                !all_of(trunc, [](char c){ return c == '0' || c == '1'; })) {
+            std::cerr << "<pattern> must consist of 0s and 1s.\n";
+            usage = true;
+        }
+    } 
+
     if (vm.count("diagram")) {
         if (vm.count("number")) {
             std::cerr << "It is an error to supply both -d and -n options.\n";
@@ -121,13 +129,7 @@ int main(int argc, char* argv[]) {
             std::cerr << "Number of nodes must be positive\n";
             usage = true;
         }
-    } else if (vm.count("truncate")) {
-        if (trunc.empty() ||
-                !all_of(trunc, [](char c){ return c == '0' || c == '1'; })) {
-            std::cerr << "<pattern> must consist of 0s and 1s.\n";
-            usage = true;
-        }
-    } else {
+    } else if (!vm.count("truncate")) {
         std::cerr << "At least one of -d, -n, or -t must be supplied.\n";
         usage = true;
     }
