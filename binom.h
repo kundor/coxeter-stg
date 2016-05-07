@@ -9,6 +9,7 @@
 #include <cstdint> // uint64_t
 #include <vector>
 #include <iosfwd>
+#include <string>
 #include <experimental/optional>
 
 /* Binomial coefficient, n choose k.
@@ -31,9 +32,9 @@ std::experimental::optional<std::vector<int>> seqsolver(std::vector<int> v, int 
  * in the combinations basis, using TeXout */
 struct binpolyTeX {
     const std::vector<int>& v;
-    char varname;
-    binpolyTeX(const std::vector<int>& vv, char c = 'x') :
-        v(vv), varname(c) {}
+    std::string varname;
+    binpolyTeX(const std::vector<int>& vv, std::string&& vn = "x") :
+        v(vv), varname(std::move(vn)) {}
 };
 
 class TeXout; //forward declaration: see TeXout.h
