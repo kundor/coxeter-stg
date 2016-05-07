@@ -24,7 +24,7 @@ countonly: countonly.o poset.o coxeter.o
 countonly.o: countonly.cc poset.h coxeter.h
 	$(CXX) $(CCFLAGS) -c $<
 
-poset.o: poset.cc poset.h coxeter.h optional.h TeXout.h
+poset.o: poset.cc poset.h coxeter.h TeXout.h
 	$(CXX) $(CCFLAGS) -c $<
 
 coxeter.o: coxeter.cc coxeter.h TeXout.h
