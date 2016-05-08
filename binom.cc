@@ -119,9 +119,15 @@ vector<int> seqsolver(vector<int> v, int start) {
  * bp.v must be nonempty. */
 template <typename Stream>
 static Stream& bpout(Stream& os, binpolyTeX bp, boost::format fmt) {
-    if (bp.v.size() == 1 || bp.v[0])
-        os << bp.v[0];
-    for (int i = 1; i < static_cast<int>(bp.v.size()); ++i) {
+    if (bp.v.size() == 1)
+        return os << bp.v[0];
+    int i = bp.v.size() - 1;
+    if (bp.v[i] == -1)
+        os << '-';
+    else if (bp.v[i] != 1)
+        os << bp.v[i];
+    os << (fmt % bp.varname % i).str();
+    for (--i; i > 0; --i) {
         if (bp.v[i] > 1)
             os << " + " << bp.v[i] << (fmt % bp.varname % i).str();
         else if (bp.v[i] == 1)
@@ -131,6 +137,10 @@ static Stream& bpout(Stream& os, binpolyTeX bp, boost::format fmt) {
         else if (bp.v[i] < -1)
             os << " - " << -bp.v[i] << (fmt % bp.varname % i).str();
     }
+    if (bp.v[0] > 0)
+        os << " + " << bp.v[0];
+    else if (bp.v[0] < 0)
+        os << " - " << -bp.v[0];
     return os;
 }
 
