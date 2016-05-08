@@ -119,7 +119,8 @@ vector<int> seqsolver(vector<int> v, int start) {
  * bp.v must be nonempty. */
 template <typename Stream>
 static Stream& bpout(Stream& os, binpolyTeX bp, boost::format fmt) {
-    os << bp.v[0];
+    if (bp.v.size() == 1 || bp.v[0])
+        os << bp.v[0];
     for (int i = 1; i < static_cast<int>(bp.v.size()); ++i) {
         if (bp.v[i] > 1)
             os << " + " << bp.v[i] << (fmt % bp.varname % i).str();
