@@ -9,10 +9,10 @@ LDFLAGS= -Wno-maybe-uninitialized -L/opt/local/lib
 # warnings from boost/graph/detail/adjacency_list.hpp
 endif
 
-truncations: truncations.o poset.o coxeter.o TeXout.o binom.o
+truncations: truncations.o poset.o coxeter.o TeXout.o binom.o polynomial.o
 	$(CXX) $(CCFLAGS) $^ $(LDFLAGS) -lboost_program_options-mt -o $@
 
-truncations.o: ../truncations.cc ../poset.h ../coxeter.h ../TeXout.h ../binom.h
+truncations.o: ../truncations.cc ../poset.h ../coxeter.h ../TeXout.h ../binom.h ../polynomial.h
 	$(CXX) $(CCFLAGS) -c $< 
 
 countonly: countonly.o poset.o coxeter.o 
@@ -34,4 +34,7 @@ TeXout.o: ../TeXout.cc ../TeXout.h
 	$(CXX) $(CCFLAGS) -c $<
 
 binom.o: ../binom.cc ../binom.h
+	$(CXX) $(CCFLAGS) -c $<
+
+polynomial.o: ../polynomial.cc ../polynomial.h ../TeXout.h
 	$(CXX) $(CCFLAGS) -c $<

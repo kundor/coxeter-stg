@@ -7,6 +7,7 @@
 #include "coxeter.h"
 #include "poset.h"
 #include "binom.h"
+#include "polynomial.h"
 #include <iostream>
 #include <fstream>
 #include <boost/program_options.hpp>
@@ -168,7 +169,7 @@ int main(int argc, char* argv[]) {
              binpolyp1 = seqsolver(orbs, trunc.size() + 1); // for n + 1
         if (!binpoly.empty()) { // if binpoly is valid, the others should be also
             int msize = popct(binpoly);
-            string var = "n";
+            const char* var = "n";
             if (popct(binpolym1) < msize) {
                 binpoly.swap(binpolym1);
                 msize = popct(binpoly);
