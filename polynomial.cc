@@ -13,8 +13,8 @@ static int ssize(Container v) {
 
 Polynomial binpolytopoly(vector<int> bp, Polynomial x) {
     if (x.size() == 0) {
-        vector<Rational> xcoef{0, 1};
-        x = Polynomial(xcoef.begin(), xcoef.end());
+        Rational xcoef[2]{0, 1};
+        x = Polynomial(xcoef, 2);
     }
     if (bp.empty())
         return {};
