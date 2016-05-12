@@ -5,6 +5,12 @@
 
 using std::vector;
 
+template <typename Container>
+static int ssize(Container v) {
+    /* Return signed size */
+    return v.size();
+}
+
 Polynomial binpolytopoly(vector<int> bp, Polynomial x) {
     if (x.size() == 0) {
         vector<Rational> xcoef{0, 1};
@@ -15,7 +21,7 @@ Polynomial binpolytopoly(vector<int> bp, Polynomial x) {
     Polynomial top{1};
     int div{1};
     Polynomial result(bp[0]);
-    for (int i = 1; i < bp.size(); ++i) {
+    for (int i = 1; i < ssize(bp); ++i) {
         top *= x;
         x -= 1;
         div *= i;
@@ -30,7 +36,7 @@ template <typename Stream>
 static Stream& bpout(Stream& os, binpolyTeX bp, boost::format fmt) {
     if (bp.v.size() == 1)
         return os << bp.v[0];
-    int i = bp.v.size() - 1;
+    int i = ssize(bp.v) - 1;
     if (bp.v[i] == -1)
         os << '-';
     else if (bp.v[i] != 1)
