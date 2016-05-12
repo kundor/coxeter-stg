@@ -7,8 +7,8 @@ using std::vector;
 
 Polynomial binpolytopoly(vector<int> bp, Polynomial x) {
     if (x.size() == 0) {
-        x.data().push_back(0);
-        x.data().push_back(1);
+        vector<Rational> xcoef{0, 1};
+        x = Polynomial(xcoef.begin(), xcoef.end());
     }
     if (bp.empty())
         return {};
