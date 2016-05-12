@@ -5,7 +5,11 @@
 
 using std::vector;
 
-Polynomial binpolytopoly(vector<int> bp, Polynomial x = {0, 1}) {
+Polynomial binpolytopoly(vector<int> bp, Polynomial x) {
+    if (x.size() == 0) {
+        x.data().push_back(0);
+        x.data().push_back(1);
+    }
     if (bp.empty())
         return {};
     Polynomial top{1};

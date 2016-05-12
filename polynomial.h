@@ -11,7 +11,11 @@ typedef boost::math::tools::polynomial<Rational> Polynomial;
  * (it's explicit, from arbitrary type?!, in boost::math)
     polynomial(Rational r) : coeff{r} {} */
 
-Polynomial binpolytopoly(std::vector<int> bp, Polynomial x = {0, 1});
+Polynomial binpolytopoly(std::vector<int> bp, Polynomial x = {});
+/* In Boost 1.61, we can have the default polynomial be "x" with
+ * Polynomial x = {0, 1}
+ * until then, we default to the zero polynomial, and check in the function
+ * to replace it with {0,1}. */
 
 /********* TeX stuff *********
  * Helpers to output a vector<int> as a polynomial
